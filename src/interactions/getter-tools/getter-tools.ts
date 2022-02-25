@@ -27,8 +27,8 @@ export const findCoordinatesForInactivePlayers = async (page: Page): Promise<Coo
 
 const parseCoordinates = (coordinates: string[]): Coordinate[] => {
     const parseCoordinate = (coordinate: string): Coordinate => {
-        const x = parseInt(coordinate.split('|')[0].split('(')[1].trim()) || 0;
-        const y = parseInt(coordinate.split('|')[1].split(')')[0].trim()) || 0;
+        const x = coordinate.split('|')[0].split('(')[1].trim();
+        const y = coordinate.split('|')[1].split(')')[0].trim();
 
         return {
             x: x,
