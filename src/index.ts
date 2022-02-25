@@ -1,15 +1,11 @@
-import { chromium } from 'playwright';
+import { startBrowserAndOpenPage } from './browser';
+import { findCoordinatesForInactivePlayers } from './interactions/getter-tools/getter-tools';
 
 const main = async () => {
-    const browser = await chromium.launch({
-        headless: false,
-        slowMo: 1000,
-        chromiumSandbox: true
-    });
+    const [browser, page] = await startBrowserAndOpenPage();
+    const coordinates = await findCoordinatesForInactivePlayers(page);
 
-    const page = await browser.newPage();
-    await page.goto('https://www.gettertools.com/ts2.x1.europe.travian.com.2/');
-
+    await browser.close();
 };
 
 main();
