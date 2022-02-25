@@ -1,0 +1,11 @@
+{
+  "name": "travian-farmlist-creator",
+  "version": "1.0.0",
+  "description": "Travian farmlist creator",
+  "main": "index.js",
+  "scripts": {},
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "playwright": "^1.19.2"
+  }
+}
