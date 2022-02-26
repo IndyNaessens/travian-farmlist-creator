@@ -5,6 +5,16 @@ import { Coordinate } from "./getter-tools-types";
 export const findCoordinatesForInactivePlayers = async (page: Page): Promise<Coordinate[]> => {
     await login(page);
 
+    // click on close ad if present
+    try {
+        await page.frameLocator('iframe[name="aswift_3"]')
+            .frameLocator('iframe[name="ad_iframe"]')
+            .locator('[aria-label="Close\\ ad"]')
+            .click({ timeout: 5000 });
+    } catch (error) {
+        console.info('No ads present on inactive player page');
+    }
+
     // get to advanced inactive search tool
     await page.locator('[href="/ts2.x1.europe.travian.com.2/2-Region-Inactives"] > span').click();
     await page.locator('.absatzBack > a.abs').click();
