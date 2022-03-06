@@ -28,20 +28,20 @@ const createFarmlistEntry = async (page: Page, name: string, villageNumber: numb
     await page.locator('button:has-text("Creëer")').click();
 
     // add coordinates to farmlist
-    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.collapsed').click();
+    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.collapsed').click({ delay: 500 });
 
     for (const coordinate of coordinates) {
         await addCoordinateToFarmlist(page, coordinate);
     };
 
     // collapse the list again
-    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.expanded').click();
+    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.expanded').click({ delay: 500 });
 };
 
 const addCoordinateToFarmlist = async (page: Page, coordinate: Coordinate): Promise<void> => {
     console.info(`Adding coordinate x=${coordinate.x} and y=${coordinate.y}`);
 
-    await page.locator('text=Voeg nieuwe farm toe').click();
+    await page.locator('text=Voeg nieuwe farm toe').click({ delay: 500 });
     await page.locator('input[name="x"]').fill(coordinate.x.toString());
     await page.locator('input[name="y"]').fill(coordinate.y.toString());
     await page.locator('text=Opslaan').click();
