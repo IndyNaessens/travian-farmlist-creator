@@ -33,14 +33,17 @@ const createFarmlistEntry = async (page: Page, name: string, villageNumber: numb
     for (const coordinate of coordinates) {
         await addCoordinateToFarmlist(page, coordinate);
     };
+
+    // collapse the list again
+    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.collapsed').click();
 };
 
 const addCoordinateToFarmlist = async (page: Page, coordinate: Coordinate): Promise<void> => {
     console.info(`Adding coordinate x=${coordinate.x} and y=${coordinate.y}`);
 
     await page.locator('text=Voeg nieuwe farm toe').click({ delay: 250 });
-    await page.locator('input[name="x"]').fill(coordinate.x);
-    await page.locator('input[name="y"]').fill(coordinate.y);
+    await page.locator('input[name="x"]').fill(coordinate.x.toString());
+    await page.locator('input[name="y"]').fill(coordinate.y.toString());
     await page.locator('text=Opslaan').click();
 
     // Click button:has-text("OK")

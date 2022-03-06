@@ -1,8 +1,8 @@
 import { Page } from "playwright";
 import { login } from "./getter-tools-common";
-import { Coordinate } from "./getter-tools-types";
+import { Coordinate, FindInactivePlayerOptions } from "./getter-tools-types";
 
-export const findCoordinatesForInactivePlayers = async (page: Page): Promise<Coordinate[]> => {
+export const findCoordinatesForInactivePlayers = async (page: Page, options: FindInactivePlayerOptions): Promise<Coordinate[]> => {
     await login(page);
 
     // click on close ad if present
@@ -20,13 +20,13 @@ export const findCoordinatesForInactivePlayers = async (page: Page): Promise<Coo
     await page.locator('.absatzBack > a.abs').click();
 
     // fill in data for inactive player search
-    await page.locator('#xyX').fill('75');
-    await page.locator('#xyY').fill('-87');
-    await page.locator('#range').fill('100');
-    await page.locator('#maxSpielerCitys').fill('1');
-    await page.locator('#maxSpielerEW').fill('100');
-    await page.locator('#nataren').setChecked(true);
-    await page.locator('#speed').fill('19');
+    await page.locator('#xyX').fill(options.departure.x.toString());
+    await page.locator('#xyY').fill(options.departure.y.toString());
+    await page.locator('#range').fill(options.range.toString());
+    await page.locator('#maxSpielerCitys').fill(options.maxVillages.toString());
+    await page.locator('#minSpielerEW').fill(options.minPopulation.toString());
+    await page.locator('#maxSpielerEW').fill(options.maxPopulation.toString());
+    await page.locator('#nataren').setChecked(options.includeNatars);
 
     // search and parse result
     await page.locator('[colspan="2"] > .stylebutton').click();
@@ -41,8 +41,8 @@ const parseCoordinates = (coordinates: string[]): Coordinate[] => {
         const y = coordinate.split('|')[1].split(')')[0].trim();
 
         return {
-            x: x,
-            y: y
+            x: parseInt(x),
+            y: parseInt(y)
         };
     };
 

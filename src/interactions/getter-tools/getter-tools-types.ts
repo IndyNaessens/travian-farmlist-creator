@@ -1,4 +1,13 @@
 export interface Coordinate {
-    x: string
-    y: string
+    x: number
+    y: number
+};
+
+export interface FindInactivePlayerOptions {
+    departure: Coordinate,
+    range: number,
+    maxVillages: number,
+    minPopulation: number,
+    maxPopulation: number,
+    includeNatars: boolean
 };
