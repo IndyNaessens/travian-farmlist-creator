@@ -16,7 +16,6 @@ export const login = async (page: Page): Promise<void> => {
     // login with form
     await page.locator('input[name="name"]').fill(runtimeConfig.authentication.travian.username);
     await page.locator('input[name="password"]').fill(runtimeConfig.authentication.travian.password);
-    await page.locator('input[name="lowRes"]').check();
 
     await page.locator('button:has-text("Login")').click();
 

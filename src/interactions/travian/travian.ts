@@ -22,9 +22,9 @@ const createFarmlistEntry = async (page: Page, name: string, villageNumber: numb
 
     console.info(`Creating farmlist ${farmlistName}`);
 
-    await page.locator('text=Creëer nieuwe lijst').first().click();
+    await page.locator('text=Creëer nieuwe lijst').nth(2).click();
     await page.locator('[placeholder="Lijstnaam"]').fill(farmlistName);
-    await page.locator('input[name="t4"]').fill('1');
+    await page.locator('input[name="t2"]').fill('5');
     await page.locator('button:has-text("Creëer")').click();
 
     // add coordinates to farmlist
@@ -35,25 +35,28 @@ const createFarmlistEntry = async (page: Page, name: string, villageNumber: numb
     };
 
     // collapse the list again
-    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.collapsed').click();
+    await page.locator(`text=${farmlistName}`).locator('../../../../..').locator('.expanded').click();
 };
 
 const addCoordinateToFarmlist = async (page: Page, coordinate: Coordinate): Promise<void> => {
     console.info(`Adding coordinate x=${coordinate.x} and y=${coordinate.y}`);
 
-    await page.locator('text=Voeg nieuwe farm toe').click({ delay: 250 });
+    await page.locator('text=Voeg nieuwe farm toe').click();
     await page.locator('input[name="x"]').fill(coordinate.x.toString());
     await page.locator('input[name="y"]').fill(coordinate.y.toString());
     await page.locator('text=Opslaan').click();
 
-    // Click button:has-text("OK")
+    // small timeout to let the popup appear when a village does not exist
+    await page.waitForTimeout(500);
     const villageDoesNotExistButton = page.locator('button:has-text("OK")');
 
     // continue when village does not exist (gettertools is not realtime data)
     if (await villageDoesNotExistButton.isVisible()) {
         console.warn(`Village with coordinate x=${coordinate.x} and y=${coordinate.y} does not exist`);
 
-        await villageDoesNotExistButton.click();
-        await page.locator('.dialogCancelButton').click();
+        // close both popups
+        while (await page.locator('.dialogCancelButton').first().isVisible()) {
+            await page.locator('.dialogCancelButton').first().click({ delay: 500 });
+        };
     };
 };
