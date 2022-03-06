@@ -1,0 +1,12 @@
+{
+    "authentication": {
+        "travian": {
+            "username": "",
+            "password": ""
+        },
+        "getterTools": {
+            "username": "",
+            "password": ""
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import { Page } from "playwright";
+import runtimeConfig from '../../../config.json';
 
 export const login = async (page: Page): Promise<void> => {
     console.info('Logging in to Travian');
@@ -13,8 +14,8 @@ export const login = async (page: Page): Promise<void> => {
     };
 
     // login with form
-    await page.locator('input[name="name"]').fill('u');
-    await page.locator('input[name="password"]').fill('p');
+    await page.locator('input[name="name"]').fill(runtimeConfig.authentication.travian.username);
+    await page.locator('input[name="password"]').fill(runtimeConfig.authentication.travian.password);
     await page.locator('input[name="lowRes"]').check();
 
     await page.locator('button:has-text("Login")').click();
